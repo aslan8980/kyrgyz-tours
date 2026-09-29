@@ -23,7 +23,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ arr }) => {
             {/* Image */}
             <img
               src={item.img}
-              alt={`${item.title} | TourCraft`}
+              alt={`${item.title} | Kyrgyz Tours`}
               className="w-full h-auto object-cover rounded-t relative z-10"
               loading="lazy"
             />

@@ -3,15 +3,23 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import LogoLight from "../assets/images/logo-light.webp";
-import { FaWhatsapp, FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
-import { Link } from "react-router-dom";
+
+import LogoLight from "../assets/images/logo-light2.webp";
+
+import {
+  FaWhatsapp,
+  FaFacebook,
+  FaInstagram,
+  FaTwitter,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer className="bg-[#2A624C]/90 text-white relative overflow-hidden">
+
       {/* Background Design Elements */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
+
         <svg
           className="absolute bottom-0 left-0 h-64 w-64"
           viewBox="0 0 200 200"
@@ -23,6 +31,7 @@ const Footer = () => {
             transform="translate(100 100)"
           />
         </svg>
+
         <svg
           className="absolute top-0 right-0 h-64 w-64"
           viewBox="0 0 200 200"
@@ -34,186 +43,262 @@ const Footer = () => {
             transform="translate(100 100)"
           />
         </svg>
+
       </div>
 
       <div className="container mx-auto px-4 py-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+
           {/* Logo & About */}
           <div>
+
             <img
               src={LogoLight}
-              alt="Logo | TourCraft Limited"
+              alt="Kyrgyz Tours"
               className="p-1 rounded-lg mb-4"
-              width={200}
-              height={250}
+              width={180}
+              height={120}
             />
-            <p className="mb-4 text-gray-200">
-              Experience the wild like never before with our curated safari
-              adventures that connect you with nature.
+
+            <p className="mb-6 text-gray-200 leading-relaxed">
+              Discover the beauty of Kyrgyzstan through breathtaking
+              landscapes, unforgettable journeys and authentic nomadic
+              experiences.
             </p>
+
+            {/* Social Media */}
             <div className="flex space-x-4">
+
               <a
-                href="https://www.facebook.com/"
+                href="#"
                 aria-label="Facebook"
-                className="text-white hover:text-safari-gold transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
+                className="text-white hover:text-[#85BC03] transition-colors"
               >
-                <FaFacebook size={30} />
+                <FaFacebook size={25} />
               </a>
+
               <a
-                href="https://www.instagram.com/"
+                href="#"
                 aria-label="Instagram"
-                className="text-white hover:text-safari-gold transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
+                className="text-white hover:text-[#85BC03] transition-colors"
               >
-                <FaInstagram size={30} />
+                <FaInstagram size={25} />
               </a>
+
               <a
-                href="https://www.twitter.com/"
+                href="#"
                 aria-label="Twitter"
-                className="text-white hover:text-safari-gold transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
+                className="text-white hover:text-[#85BC03] transition-colors"
               >
-                <FaTwitter size={30} />
+                <FaTwitter size={25} />
               </a>
+
+              <a
+                href="#"
+                aria-label="WhatsApp"
+                className="text-white hover:text-[#85BC03] transition-colors"
+              >
+                <FaWhatsapp size={25} />
+              </a>
+
             </div>
+
           </div>
 
           {/* Quick Links */}
-          <div className="">
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+          <div>
+
+            <h3 className="text-xl font-semibold mb-5">
+              Quick Links
+            </h3>
+
+            <ul className="space-y-3">
+
               <li>
-                <Link
-                  to="/"
+                <a
+                  href="#home"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Home
-                </Link>
+                </a>
               </li>
+
               <li>
-                <Link
-                  to="#"
+                <a
+                  href="#about"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   About Us
-                </Link>
+                </a>
               </li>
+
               <li>
-                <Link
-                  to="#"
+                <a
+                  href="#itineraries"
+                  className="text-gray-200 hover:text-white transition-colors"
+                >
+                  Itineraries
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#gallery"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Gallery
-                </Link>
+                </a>
               </li>
+
               <li>
-                <Link
-                  to="#"
+                <a
+                  href="#testimonials"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
                   Testimonials
-                </Link>
+                </a>
               </li>
+
               <li>
-                <Link
-                  to="#"
+                <a
+                  href="#contact"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
-                  Contact
-                </Link>
+                  Contact Us
+                </a>
               </li>
+
             </ul>
+
           </div>
 
           {/* Popular Tours */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Popular Tours</h3>
-            <ul className="space-y-2">
+
+            <h3 className="text-xl font-semibold mb-5">
+              Popular Tours
+            </h3>
+
+            <ul className="space-y-3">
+
               <li>
                 <a
-                  href="#"
+                  href="#itineraries"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
-                  3 Days Tour
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-200 hover:text-white transition-colors"
-                >
-                  4 Days Tour
+                  3 Days — Bishkek & Ala-Archa
                 </a>
               </li>
 
               <li>
                 <a
-                  href="#"
+                  href="#itineraries"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
-                  5 Days Tour
+                  4 Days — Issyk-Kul
                 </a>
               </li>
+
               <li>
                 <a
-                  href="#"
+                  href="#itineraries"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
-                  14 Days Tour
+                  5 Days — Issyk-Kul & Karakol
                 </a>
               </li>
+
+              <li>
+                <a
+                  href="#itineraries"
+                  className="text-gray-200 hover:text-white transition-colors"
+                >
+                  14 Days — Discover Kyrgyzstan
+                </a>
+              </li>
+
             </ul>
+
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
-            <ul className="space-y-4">
+
+            <h3 className="text-xl font-semibold mb-5">
+              Contact Us
+            </h3>
+
+            <ul className="space-y-5">
+
+              {/* Location */}
               <li className="flex items-start">
-                <MapPin className="mr-2 h-5 w-5 flex-shrink-0 mt-0.5" />
-                <span>
-                  Savannah Horizons Ltd. Ngorongoro Conservation Area Arusha
-                  Region Tanzania, East Africa
+
+                <MapPin className="mr-3 h-5 w-5 flex-shrink-0 mt-0.5" />
+
+                <span className="text-gray-200">
+                  Bishkek, Kyrgyzstan
                 </span>
+
               </li>
+
+              {/* Phone */}
               <li className="flex items-center">
-                <Phone className="mr-2 h-5 w-5 flex-shrink-0" />
-                <a href="tel:+919876543210" className="hover:underline">
-                  +91 98765 43210
-                </a>
+
+                <Phone className="mr-3 h-5 w-5 flex-shrink-0" />
+
+                <span className="text-gray-200">
+                  Coming soon
+                </span>
+
               </li>
+
+              {/* Email */}
               <li className="flex items-center">
-                <Mail className="mr-2 h-5 w-5 flex-shrink-0" />
-                <a href="mailto:info@tourcraft.com" className="hover:underline">
-                  info@tourcraft.com
-                </a>
+
+                <Mail className="mr-3 h-5 w-5 flex-shrink-0" />
+
+                <span className="text-gray-200">
+                  Coming soon
+                </span>
+
               </li>
-              <li className="text-white/90 flex mt-2 items-center">
-                <FaWhatsapp className="w-7 h-7 text-white" />
-                <a href="https://wa.me/+919876543210" className="ml-2 hover:underline">
-                  +91 98765 43210
-                </a>
+
+              {/* WhatsApp */}
+              <li className="flex items-center">
+
+                <FaWhatsapp className="mr-3 w-5 h-5" />
+
+                <span className="text-gray-200">
+                  Coming soon
+                </span>
+
               </li>
+
             </ul>
+
           </div>
+
         </div>
 
-        <div className="border-t border-white/20 mt-12 pt-6 flex flex-wrap justify-between items-center text-sm text-gray-300">
+        {/* Bottom */}
+        <div className="border-t border-white/20 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-300">
+
           <p>
-            &copy; {new Date().getFullYear()} TourCraft. All rights reserved.
+            © {new Date().getFullYear()} Kyrgyz Tours. All rights reserved.
           </p>
-          <Link
-            to="#"
+
+          <a
+            href="#"
             className="hover:text-white transition-colors"
           >
             Privacy Policy
-          </Link>
+          </a>
+
         </div>
+
       </div>
+
     </footer>
   );
 };
