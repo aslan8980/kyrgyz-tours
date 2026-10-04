@@ -36,7 +36,7 @@ export const itinerariesCard = [
   {
     id: 3,
     img: FiveDays,
-    title: "5 Days — Issyk-Kul & Karakol",
+    title: "5 Days — Skiing & Snowboarding in Karakol",
     url: "#",
   },
   {

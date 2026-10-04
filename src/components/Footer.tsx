@@ -205,7 +205,7 @@ const Footer = () => {
                   href="#itineraries"
                   className="text-gray-200 hover:text-white transition-colors"
                 >
-                  5 Days — Issyk-Kul & Karakol
+                  5 Days — Skiing & Snowboarding in Karakol
                 </a>
               </li>
 

@@ -22,11 +22,11 @@ const ImageCard: React.FC<ImageCardProps> = ({ arr }) => {
           <div className="bg-white shadow-md rounded">
             {/* Image */}
             <img
-              src={item.img}
-              alt={`${item.title} | Kyrgyz Tours`}
-              className="w-full h-auto object-cover rounded-t relative z-10"
-              loading="lazy"
-            />
+  src={item.img}
+  alt={`${item.title} | Kyrgyz Tours`}
+  className="w-full h-[320px] object-cover rounded-t relative z-10"
+  loading="lazy"
+/>
             {/* Title with link */}
             <div className="flex flex-col items-center px-5 pt-2 pb-2 text-center">
               <Link
