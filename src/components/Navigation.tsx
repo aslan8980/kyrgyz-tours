@@ -1,25 +1,44 @@
 import { useState } from "react";
-import { Phone, Mail } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo1.webp";
-
-import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "About Us", path: "/about" },
+    { name: "Itineraries", path: "/itineraries" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "Testimonials", path: "/testimonials" },
+    { name: "Map", path: "/map" },
+    { name: "Contact Us", path: "/contact" },
+  ];
+
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return location.pathname === "/";
+    }
+
+    return (
+      location.pathname === path ||
+      location.pathname.startsWith(`${path}/`)
+    );
+  };
 
   const closeMenu = () => {
     setMenuOpen(false);
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 shadow-sm">
+    <nav className="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-sm z-[9999] shadow-sm">
       <div className="container mx-auto px-4">
-
         <div className="flex items-center justify-between h-24">
 
-          {/* Logo */}
-          <a
-            href="#home"
+          {/* LOGO */}
+          <Link
+            to="/"
             onClick={closeMenu}
             className="flex items-center"
           >
@@ -28,140 +47,72 @@ const Navigation = () => {
               alt="Kyrgyz Tours"
               className="w-[140px] h-auto object-contain"
             />
-          </a>
+          </Link>
 
-          {/* Desktop navigation */}
+          {/* DESKTOP NAVIGATION */}
           <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => {
+              const active = isActive(item.path);
 
-            <a
-              href="#home"
-              className="text-gray-800 hover:text-[#4A5C23] transition-colors"
-            >
-              Home
-            </a>
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={closeMenu}
+                  className={`relative py-2 transition-all duration-300 ${
+                    active
+                      ? "text-[#4A5C23] font-semibold"
+                      : "text-gray-800 hover:text-[#4A5C23]"
+                  }`}
+                >
+                  {item.name}
 
-            <a
-              href="#about"
-              className="text-gray-800 hover:text-[#4A5C23] transition-colors"
-            >
-              About Us
-            </a>
-
-            <a
-              href="#itineraries"
-              className="text-gray-800 hover:text-[#4A5C23] transition-colors"
-            >
-              Itineraries
-            </a>
-
-            <a
-              href="#gallery"
-              className="text-gray-800 hover:text-[#4A5C23] transition-colors"
-            >
-              Gallery
-            </a>
-
-            <a
-              href="#testimonials"
-              className="text-gray-800 hover:text-[#4A5C23] transition-colors"
-            >
-              Testimonials
-            </a>
-
-            <a
-              href="#map"
-              className="text-gray-800 hover:text-[#4A5C23] transition-colors"
-            >
-              Map
-            </a>
-
-            <a
-              href="#contact"
-              className="text-gray-800 hover:text-[#4A5C23] transition-colors"
-            >
-              Contact Us
-            </a>
-
+                  {/* ACTIVE INDICATOR */}
+                  <span
+                    className={`absolute left-0 bottom-0 h-[2px] bg-[#4A5C23] rounded-full transition-all duration-300 ${
+                      active ? "w-full" : "w-0"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Mobile menu button */}
+          {/* MOBILE BUTTON */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden text-gray-800 text-2xl"
             aria-label="Toggle menu"
           >
-            ☰
+            {menuOpen ? "✕" : "☰"}
           </button>
-
         </div>
 
-        {/* Mobile navigation */}
+        {/* MOBILE NAVIGATION */}
         {menuOpen && (
-          <div className="md:hidden pb-6">
+          <div className="md:hidden pb-5">
+            <div className="flex flex-col space-y-2">
+              {navItems.map((item) => {
+                const active = isActive(item.path);
 
-            <div className="flex flex-col space-y-4">
-
-              <a
-                href="#home"
-                onClick={closeMenu}
-                className="text-gray-800 hover:text-[#4A5C23]"
-              >
-                Home
-              </a>
-
-              <a
-                href="#about"
-                onClick={closeMenu}
-                className="text-gray-800 hover:text-[#4A5C23]"
-              >
-                About Us
-              </a>
-
-              <a
-                href="#itineraries"
-                onClick={closeMenu}
-                className="text-gray-800 hover:text-[#4A5C23]"
-              >
-                Itineraries
-              </a>
-
-              <a
-                href="#gallery"
-                onClick={closeMenu}
-                className="text-gray-800 hover:text-[#4A5C23]"
-              >
-                Gallery
-              </a>
-
-              <a
-                href="#testimonials"
-                onClick={closeMenu}
-                className="text-gray-800 hover:text-[#4A5C23]"
-              >
-                Testimonials
-              </a>
-
-              <a
-                href="#map"
-                onClick={closeMenu}
-                className="text-gray-800 hover:text-[#4A5C23]"
-              >
-                Map
-              </a>
-
-              <a
-                href="#contact"
-                onClick={closeMenu}
-                className="text-gray-800 hover:text-[#4A5C23]"
-              >
-                Contact Us
-              </a>
-
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={closeMenu}
+                    className={`px-4 py-3 rounded-xl transition-all duration-300 ${
+                      active
+                        ? "bg-[#f0f2eb] text-[#4A5C23] font-semibold"
+                        : "text-gray-800 hover:bg-gray-50"
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
             </div>
-
           </div>
         )}
-
       </div>
     </nav>
   );

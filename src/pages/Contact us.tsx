@@ -1,109 +1,128 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import Navigation from "../components/Navigation";
 
 const Contact = () => {
   return (
-    <section
-      id="contact"
-      className="bg-white py-32 px-4 md:px-8"
-    >
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-white">
 
-        {/* Header */}
-        <div className="text-center mb-16">
+      {/* Main Navigation */}
+      <Navigation />
+
+      {/* Page Hero */}
+      <section className="pt-40 pb-20 px-4 md:px-8">
+
+        <div className="max-w-4xl mx-auto text-center">
+
           <div className="inline-flex items-center gap-2 bg-[#c9cebd] rounded-full px-4 py-2">
-            <span className="w-2 h-2 bg-[#4a5c23] rounded-full"></span>
+
+            <span className="w-2 h-2 bg-[#4a5c23] rounded-full" />
 
             <span className="text-sm font-medium">
               Get in Touch
             </span>
+
           </div>
 
-          <h2 className="mt-4 text-4xl md:text-5xl font-bold text-gray-900">
+          <h1 className="mt-5 text-4xl md:text-6xl font-bold text-gray-900">
             Start Your Journey
-          </h2>
+          </h1>
 
-          <p className="max-w-2xl mx-auto mt-5 text-gray-600 leading-relaxed">
+          <p className="max-w-2xl mx-auto mt-6 text-lg text-gray-600 leading-relaxed">
             Have a question about traveling in Kyrgyzstan?
             Get in touch with us and start planning your adventure.
           </p>
+
         </div>
 
-        {/* Content */}
+      </section>
+
+      {/* Contact Content */}
+      <main className="max-w-7xl mx-auto px-4 md:px-8 pb-24">
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-          {/* Contact information */}
+          {/* Contact Information */}
           <div className="bg-[#f7f8f5] rounded-2xl p-8 md:p-10">
 
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">
               Contact Information
-            </h3>
+            </h2>
 
             <div className="space-y-7">
 
               {/* Location */}
               <div className="flex items-start gap-4">
+
                 <div className="w-12 h-12 rounded-full bg-[#4A5C23] flex items-center justify-center shrink-0">
                   <MapPin className="text-white w-5 h-5" />
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold text-gray-900">
                     Location
-                  </h4>
+                  </h3>
 
                   <p className="text-gray-600 mt-1">
                     Bishkek, Kyrgyzstan
                   </p>
                 </div>
+
               </div>
 
               {/* Phone */}
               <div className="flex items-start gap-4">
+
                 <div className="w-12 h-12 rounded-full bg-[#4A5C23] flex items-center justify-center shrink-0">
                   <Phone className="text-white w-5 h-5" />
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold text-gray-900">
                     Phone
-                  </h4>
+                  </h3>
 
                   <p className="text-gray-600 mt-1">
                     Coming soon
                   </p>
                 </div>
+
               </div>
 
               {/* Email */}
               <div className="flex items-start gap-4">
+
                 <div className="w-12 h-12 rounded-full bg-[#4A5C23] flex items-center justify-center shrink-0">
                   <Mail className="text-white w-5 h-5" />
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold text-gray-900">
                     Email
-                  </h4>
+                  </h3>
 
                   <p className="text-gray-600 mt-1">
                     Coming soon
                   </p>
                 </div>
+
               </div>
 
             </div>
+
           </div>
 
-          {/* Contact form */}
+          {/* Contact Form */}
           <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">
               Send Us a Message
-            </h3>
+            </h2>
 
             <form className="space-y-6">
 
               {/* Name */}
               <div>
+
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 mb-2"
@@ -117,10 +136,12 @@ const Contact = () => {
                   placeholder="Enter your name"
                   className="w-full rounded-lg border border-gray-200 px-4 py-3 outline-none focus:border-[#4A5C23] focus:ring-1 focus:ring-[#4A5C23]"
                 />
+
               </div>
 
               {/* Email */}
               <div>
+
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 mb-2"
@@ -134,10 +155,12 @@ const Contact = () => {
                   placeholder="Enter your email"
                   className="w-full rounded-lg border border-gray-200 px-4 py-3 outline-none focus:border-[#4A5C23] focus:ring-1 focus:ring-[#4A5C23]"
                 />
+
               </div>
 
               {/* Message */}
               <div>
+
                 <label
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700 mb-2"
@@ -151,6 +174,7 @@ const Contact = () => {
                   placeholder="Tell us about your trip..."
                   className="w-full rounded-lg border border-gray-200 px-4 py-3 outline-none resize-none focus:border-[#4A5C23] focus:ring-1 focus:ring-[#4A5C23]"
                 />
+
               </div>
 
               {/* Submit */}
@@ -162,11 +186,14 @@ const Contact = () => {
               </button>
 
             </form>
+
           </div>
 
         </div>
-      </div>
-    </section>
+
+      </main>
+
+    </div>
   );
 };
 

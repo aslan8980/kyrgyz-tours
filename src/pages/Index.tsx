@@ -8,7 +8,6 @@ import ImageCard from "@/components/ImageCard";
 
 import Gallery from "./Gallery";
 import Testimonials from "./Testimonials";
-import Map from "./Map";
 import Contact from "./Contact us";
 
 import { itinerariesCard } from "../data";
@@ -103,9 +102,6 @@ const Index = () => {
       <section id="testimonials">
         <Testimonials />
       </section>
-
-      {/* Map */}
-      <Map />
 
       {/* Contact */}
       <Contact />

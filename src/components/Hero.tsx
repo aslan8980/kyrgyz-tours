@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
 
 import Slide1 from "../assets/images/slide-1.webp";
 import Slide2 from "../assets/images/slide-2.webp";
@@ -50,7 +49,9 @@ const Hero = () => {
 
   // Previous slide
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + slides.length) % slides.length
+    );
     setImageLoaded(false);
   };
 
@@ -59,26 +60,40 @@ const Hero = () => {
     setImageLoaded(true);
   };
 
+  // Scroll to itineraries
+  const handleExploreClick = () => {
+    const itinerariesSection =
+      document.getElementById("itineraries");
+
+    if (itinerariesSection) {
+      itinerariesSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
     <div className="relative h-screen w-full overflow-hidden">
-
       {slides.map((slide, index) => (
         <div
           key={index}
           aria-hidden={currentSlide !== index}
           className={`absolute inset-0 transition-opacity duration-1000 ${
-            currentSlide === index ? "opacity-100" : "opacity-0"
+            currentSlide === index
+              ? "opacity-100"
+              : "opacity-0"
           }`}
         >
-
           {/* Background Image */}
           <div
             className={`absolute inset-0 bg-cover bg-center ${
               imageLoaded ? "" : "bg-gray-300"
             }`}
-            style={{ backgroundImage: `url(${slide.image})` }}
+            style={{
+              backgroundImage: `url(${slide.image})`,
+            }}
           >
-
             {/* Hidden image for loading */}
             <img
               src={slide.image}
@@ -94,9 +109,7 @@ const Hero = () => {
 
           {/* Slide Content */}
           <div className="relative h-full flex items-center justify-center text-center text-white p-4 z-20">
-
             <div className="max-w-4xl animate-fadeIn">
-
               <h1 className="text-5xl md:text-7xl font-bold mb-4">
                 {slide.title}
               </h1>
@@ -105,12 +118,13 @@ const Hero = () => {
                 {slide.description}
               </p>
 
-              <Link to="/#itineraries">
-                <Button className="bg-white text-safari-green hover:bg-safari-gold hover:text-white z-30">
-                  Explore Now
-                </Button>
-              </Link>
-
+              {/* Explore Button */}
+              <Button
+                onClick={handleExploreClick}
+                className="bg-white text-safari-green hover:bg-safari-gold hover:text-white z-30"
+              >
+                Explore Now
+              </Button>
             </div>
           </div>
         </div>
@@ -133,7 +147,6 @@ const Hero = () => {
       >
         <ChevronRight className="h-6 w-6 text-white" />
       </button>
-
     </div>
   );
 };

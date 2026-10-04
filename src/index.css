@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================
+   ROOT VARIABLES
+   ========================================= */
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -35,19 +39,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -79,6 +76,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -88,63 +86,183 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
-.bg-white {
-  background-color: #fff;
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+    margin: 0;
+    min-width: 320px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
+/* =========================================
+   GLOBAL UTILITIES
+   ========================================= */
+
+.bg-white {
+  background-color: #fff;
+}
 
 .-mt-8 {
   margin-top: -2rem !important;
 }
 
+/* =========================================
+   PAGE ENTER ANIMATION
+   ========================================= */
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.45s ease-out both;
+}
+
+/* =========================================
+   SCROLL TO TOP
+   ========================================= */
+
 .progress-wrap {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
+
   width: 60px;
   height: 60px;
+
   cursor: pointer;
-  z-index: 9999;
+
+  z-index: 9998;
+
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    transform 0.3s ease;
+
   border-radius: 50%;
+
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+
   background: transparent;
 }
+
+.progress-wrap:hover {
+  transform: translateY(-3px);
+}
+
 .progress-wrap.active-progress {
   opacity: 1;
   visibility: visible;
 }
+
 .progress-track {
-  stroke: #e2e8f0; /* light gray ring */
+  stroke: #e2e8f0;
 }
+
 .progress-indicator {
-  stroke: #2a624b; /* dark safari green progress */
+  stroke: #2a624b;
   stroke-linecap: round;
+
   transition: stroke-dashoffset 10ms linear;
 }
+
 .progress-arrow {
   position: absolute;
+
   top: 50%;
   left: 50%;
+
   transform: translate(-50%, -50%);
+
   font-size: 18px;
   font-weight: bold;
+
   color: #2a624b;
+
   pointer-events: none;
   user-select: none;
+
   font-family: Arial, sans-serif;
-  user-select: none;
+}
+
+/* =========================================
+   VIEW TRANSITIONS
+   ========================================= */
+
+/*
+  These rules are intentionally kept minimal.
+
+  Navigation itself uses React Router.
+  We do not override the router with complicated
+  View Transition animations here.
+*/
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: ease;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+  .progress-wrap {
+    width: 50px;
+    height: 50px;
+
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .progress-arrow {
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
