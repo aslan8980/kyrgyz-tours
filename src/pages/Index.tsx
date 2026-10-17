@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import Navigation from "../components/Navigation";
 import Hero from "../components/Hero";
 import Welcome from "../components/Welcome";
-import Footer from "../components/Footer";
 import ImageCard from "@/components/ImageCard";
 
 import Gallery from "./Gallery";
@@ -106,9 +105,7 @@ const Index = () => {
       {/* Contact */}
       <Contact />
 
-      {/* Footer */}
-      <Footer />
-    </div>
+      </div>
   );
 };
 

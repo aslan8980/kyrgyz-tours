@@ -1,3 +1,5 @@
+
+import { Link } from "react-router-dom";
 import Navigation from "../components/Navigation";
 import { ArrowRight, Clock, MapPin } from "lucide-react";
 
@@ -55,31 +57,29 @@ const Itineraries = () => {
       <Navigation />
 
       {/* HERO */}
-      <section className="relative min-h-[620px] flex items-center overflow-hidden">
+      <section className="relative flex min-h-[580px] items-center overflow-hidden">
         <img
           src={FourteenDays}
           alt="Discover Kyrgyzstan"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
 
         <div className="absolute inset-0 bg-black/50" />
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-4 md:px-8 pt-28">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-28 md:px-8">
           <div className="max-w-3xl text-white">
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md rounded-full px-4 py-2 mb-6">
-              <span className="w-2 h-2 bg-[#d7b85a] rounded-full" />
-              <span className="text-sm font-medium">
-                Our Journeys
-              </span>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 backdrop-blur-md">
+              <span className="h-2 w-2 rounded-full bg-[#d7b85a]" />
+              <span className="text-sm font-medium">Our Journeys</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+            <h1 className="text-5xl font-bold leading-tight md:text-7xl">
               Discover
               <br />
               Kyrgyzstan Your Way
             </h1>
 
-            <p className="mt-7 text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl">
+            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-white/90 md:text-xl">
               From short mountain escapes to unforgettable journeys across
               the country, choose the experience that fits your adventure.
             </p>
@@ -87,137 +87,138 @@ const Itineraries = () => {
         </div>
       </section>
 
-      {/* INTRO */}
-      <section className="py-24 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-end">
+      {/* INTRO AND TOURS */}
+      <section className="px-4 py-20 md:px-8 md:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid items-end gap-12 lg:grid-cols-2">
             <div>
-              <div className="inline-flex items-center gap-2 bg-[#c9cebd] rounded-full px-4 py-2">
-                <span className="w-2 h-2 bg-[#4a5c23] rounded-full" />
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#c9cebd] px-4 py-2">
+                <span className="h-2 w-2 rounded-full bg-[#4a5c23]" />
                 <span className="text-sm font-medium">
                   Choose Your Adventure
                 </span>
               </div>
 
-              <h2 className="mt-6 text-4xl md:text-5xl font-bold leading-tight">
+              <h2 className="mt-6 text-4xl font-bold leading-tight md:text-5xl">
                 Journeys made for
                 <br />
                 curious travelers.
               </h2>
             </div>
 
-            <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
+            <p className="max-w-xl text-lg leading-relaxed text-gray-600">
               Every itinerary is designed to help you experience more than
               just the famous places. Discover landscapes, local traditions,
               mountain adventures and the people who make Kyrgyzstan special.
             </p>
           </div>
 
-          {/* TOURS */}
-          <div className="grid md:grid-cols-2 gap-7 mt-16">
+          {/* COMPACT, FULLY CLICKABLE TOUR CARDS */}
+          <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
             {tours.map((tour) => (
-              <article
+              <Link
                 key={tour.id}
-                className="group bg-[#f4f5f0] rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300"
+                to={`/itineraries/${tour.id}`}
+                className="group block overflow-hidden rounded-3xl bg-[#f4f5f0] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4A5C23]/40"
+                aria-label={`View journey: ${tour.title}`}
               >
-                <div className="relative h-[330px] overflow-hidden">
+                <div className="relative h-[250px] overflow-hidden sm:h-[270px] md:h-[285px]">
                   <img
                     src={tour.image}
                     alt={tour.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
 
-                  <div className="absolute top-5 left-5 bg-white/95 backdrop-blur-md rounded-full px-4 py-2 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-[#4A5C23]" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+
+                  <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 backdrop-blur-md">
+                    <Clock className="h-4 w-4 text-[#4A5C23]" />
                     <span className="text-sm font-semibold">
                       {tour.duration}
                     </span>
-                  </div>
+                  </span>
                 </div>
 
-                <div className="p-7 md:p-8">
+                <div className="flex min-h-[285px] flex-col p-6 md:p-7">
                   <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <MapPin className="w-4 h-4 text-[#4A5C23]" />
+                    <MapPin className="h-4 w-4 shrink-0 text-[#4A5C23]" />
                     {tour.location}
                   </div>
 
-                  <h3 className="mt-4 text-2xl font-bold">
+                  <h3 className="mt-3 text-xl font-bold leading-snug text-[#17200f] transition-colors group-hover:text-[#4A5C23] md:text-2xl">
                     {tour.title}
                   </h3>
 
-                  <p className="mt-4 text-gray-600 leading-relaxed">
+                  <p className="mt-3 text-sm leading-6 text-gray-600 md:text-base">
                     {tour.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mt-6">
+                  <div className="mt-5 flex flex-wrap gap-2">
                     {tour.highlights.map((highlight) => (
                       <span
                         key={highlight}
-                        className="bg-white rounded-full px-3 py-1.5 text-sm text-gray-600"
+                        className="rounded-full bg-white px-3 py-1.5 text-xs text-gray-600 md:text-sm"
                       >
                         {highlight}
                       </span>
                     ))}
                   </div>
 
-                  <a
-                    href={`/itineraries/${tour.id}`}
-                    className="inline-flex items-center gap-2 mt-7 font-semibold text-[#4A5C23] hover:gap-3 transition-all"
-                  >
+                  <div className="mt-auto flex items-center gap-2 pt-6 font-semibold text-[#4A5C23]">
                     View Journey
-                    <ArrowRight className="w-5 h-5" />
-                  </a>
+                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
+                  </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
       {/* PHOTO STRIP */}
-      <section className="px-4 md:px-8 pb-24">
-        <div className="max-w-7xl mx-auto grid grid-cols-3 gap-4">
+      <section className="px-4 pb-20 md:px-8 md:pb-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-3 gap-3 md:gap-4">
           <img
             src={ThreeDays}
             alt="Ala-Archa"
-            className="w-full h-[220px] md:h-[350px] object-cover rounded-3xl"
+            className="h-[160px] w-full rounded-2xl object-cover md:h-[300px] md:rounded-3xl"
           />
 
           <img
             src={FourDays}
             alt="Issyk-Kul and Song-Kul"
-            className="w-full h-[220px] md:h-[350px] object-cover rounded-3xl"
+            className="h-[160px] w-full rounded-2xl object-cover md:h-[300px] md:rounded-3xl"
           />
 
           <img
             src={FiveDays}
             alt="Karakol"
-            className="w-full h-[220px] md:h-[350px] object-cover rounded-3xl"
+            className="h-[160px] w-full rounded-2xl object-cover md:h-[300px] md:rounded-3xl"
           />
         </div>
       </section>
 
       {/* CTA */}
-      <section className="px-4 md:px-8 pb-24">
-        <div className="max-w-7xl mx-auto bg-[#17200f] rounded-[2rem] px-6 md:px-12 py-20 text-center text-white">
-          <h2 className="text-4xl md:text-5xl font-bold">
+      <section className="px-4 pb-20 md:px-8 md:pb-24">
+        <div className="mx-auto max-w-7xl rounded-[2rem] bg-[#17200f] px-6 py-16 text-center text-white md:px-12 md:py-20">
+          <h2 className="text-4xl font-bold md:text-5xl">
             Not sure which journey
             <br />
             is right for you?
           </h2>
 
-          <p className="mt-6 max-w-2xl mx-auto text-white/70 text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/70">
             Tell us what kind of experience you're looking for and we'll
             help you plan your perfect Kyrgyzstan adventure.
           </p>
 
-          <a
-            href="/contact"
-            className="inline-flex items-center gap-2 mt-8 bg-white text-gray-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors"
+          <Link
+            to="/contact"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-semibold text-gray-900 transition-colors hover:bg-gray-100"
           >
             Talk to Us
-            <ArrowRight className="w-5 h-5" />
-          </a>
+            <ArrowRight className="h-5 w-5" />
+          </Link>
         </div>
       </section>
     </div>

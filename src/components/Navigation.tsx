@@ -1,10 +1,19 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../assets/images/logo1.webp";
 
 const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, [location.pathname]);
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -27,19 +36,32 @@ const Navigation = () => {
     );
   };
 
-  const closeMenu = () => {
+  const handleNavigation = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    path: string
+  ) => {
+    event.preventDefault();
     setMenuOpen(false);
+
+    if (location.pathname === path) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    navigate(path);
   };
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-sm z-[9999] shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-24">
-
-          {/* LOGO */}
           <Link
             to="/"
-            onClick={closeMenu}
+            onClick={(event) => handleNavigation(event, "/")}
             className="flex items-center"
           >
             <img
@@ -49,7 +71,6 @@ const Navigation = () => {
             />
           </Link>
 
-          {/* DESKTOP NAVIGATION */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
               const active = isActive(item.path);
@@ -58,7 +79,9 @@ const Navigation = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  onClick={closeMenu}
+                  onClick={(event) =>
+                    handleNavigation(event, item.path)
+                  }
                   className={`relative py-2 transition-all duration-300 ${
                     active
                       ? "text-[#4A5C23] font-semibold"
@@ -67,9 +90,8 @@ const Navigation = () => {
                 >
                   {item.name}
 
-                  {/* ACTIVE INDICATOR */}
                   <span
-                    className={`absolute left-0 bottom-0 h-[2px] bg-[#4A5C23] rounded-full transition-all duration-300 ${
+                    className={`absolute left-0 bottom-0 h-[2px] rounded-full bg-[#4A5C23] transition-all duration-300 ${
                       active ? "w-full" : "w-0"
                     }`}
                   />
@@ -78,17 +100,17 @@ const Navigation = () => {
             })}
           </div>
 
-          {/* MOBILE BUTTON */}
           <button
+            type="button"
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden text-gray-800 text-2xl"
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
           >
             {menuOpen ? "✕" : "☰"}
           </button>
         </div>
 
-        {/* MOBILE NAVIGATION */}
         {menuOpen && (
           <div className="md:hidden pb-5">
             <div className="flex flex-col space-y-2">
@@ -99,7 +121,9 @@ const Navigation = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    onClick={closeMenu}
+                    onClick={(event) =>
+                      handleNavigation(event, item.path)
+                    }
                     className={`px-4 py-3 rounded-xl transition-all duration-300 ${
                       active
                         ? "bg-[#f0f2eb] text-[#4A5C23] font-semibold"
