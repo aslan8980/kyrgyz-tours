@@ -251,7 +251,6 @@ const TourDetails = () => {
   const [guests, setGuests] = useState(2);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
-  const [bookingOpen, setBookingOpen] = useState(false);
   const [guideContactOpen, setGuideContactOpen] = useState(false);
   const [notice, setNotice] = useState("");
   const [sending, setSending] = useState(false);
@@ -336,49 +335,18 @@ const TourDetails = () => {
   };
 
   const openBooking = () => {
-    setBookingOpen(true);
-    window.setTimeout(() => {
+    if (!selectedDate) {
+      setNotice("Please choose a date before requesting to book.");
       document
-        .getElementById("booking-form")
-        ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }, 0);
-  };
-
-  const handleBookingSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!tour) return;
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const name = String(formData.get("name") || "").trim();
-    const email = String(formData.get("email") || "").trim();
-    const phone = String(formData.get("phone") || "").trim();
-    const message = String(formData.get("message") || "").trim();
-
-    if (!name || !email) {
-      setNotice("Please enter your name and email address.");
+        .getElementById("tour-calendar")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
 
-    setSending(true);
-
-    // Booking table columns differ between projects. Until its exact schema
-    // is verified, don't pretend this form created a database booking.
-    setNotice(
-      "Your form is ready, but online request submission still needs to be connected to the booking_requests table."
-    );
-    setSending(false);
-    console.info("Booking request draft", {
-      tourId: tour.id,
-      tourSlug: tour.slug,
-      name,
-      email,
-      phone,
-      date: selectedDate || null,
-      guests,
-      message,
-    });
+    setNotice("");
+    window.location.assign("/contact");
   };
+
 
   const handleGuideContactSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -512,6 +480,17 @@ const TourDetails = () => {
             )}
           </div>
 
+          <Link
+            to="/saved"
+            title="View saved tours"
+            aria-label={`View saved tours (${savedTours.length})`}
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-sm font-semibold text-[#4A5C23] transition hover:border-[#4A5C23] hover:bg-[#f4f5f0]"
+          >
+            <Heart size={15} />
+            <span className="hidden md:inline">Favorites</span>
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#e9eddf] px-1 text-xs">{savedTours.length}</span>
+          </Link>
+
           <label className="flex shrink-0 items-center gap-2 text-sm text-gray-600">
             <span className="hidden sm:inline">Currency</span>
             <select
@@ -556,9 +535,11 @@ const TourDetails = () => {
               )}
             </div>
 
-            <h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight text-[#17200f] md:text-6xl">
-              {tour.title}
-            </h1>
+            <div className="mt-5 flex items-start justify-between gap-4">
+              <h1 className="min-w-0 text-4xl font-bold leading-tight tracking-tight text-[#17200f] md:text-6xl">
+                {tour.title}
+              </h1>
+            </div>
 
             <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
               <span className="inline-flex items-center gap-2">
@@ -616,17 +597,6 @@ const TourDetails = () => {
             </div>
 
             <div className="mt-7 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={toggleFavorite}
-                className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-3 font-semibold transition hover:bg-[#f7f8f4]"
-              >
-                <Heart
-                  size={18}
-                  className={isSaved ? "fill-[#4A5C23] text-[#4A5C23]" : ""}
-                />
-                {isSaved ? "Saved to favorites" : "Save tour"}
-              </button>
               <button
                 type="button"
                 onClick={() => setGuideContactOpen(true)}
@@ -787,6 +757,90 @@ const TourDetails = () => {
               </div>
             </section>
 
+<section id="tour-calendar" className="scroll-mt-32 border-b border-gray-100 py-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold text-[#17200f]">Choose a date</h3>
+                <span className="text-xs text-gray-500">Request only</span>
+              </div>
+
+              <div className="mt-3 w-full max-w-[830px] rounded-2xl border border-gray-100 bg-[#fbfcf9] px-3 py-4 sm:px-5">
+                <div className="grid grid-cols-[36px_minmax(0,1fr)_36px] items-center">
+                  <button
+                    type="button"
+                    onClick={() => changeMonth(-1)}
+                    disabled={!canGoPreviousMonth}
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-[#4A5C23] transition hover:bg-[#e9eddf] disabled:cursor-not-allowed disabled:text-gray-300"
+                    aria-label="Previous month"
+                  >
+                    <ChevronLeft size={19} />
+                  </button>
+
+                  <p className="text-center text-sm font-bold text-[#17200f]">
+                    {currentMonthLabel}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => changeMonth(1)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-[#4A5C23] transition hover:bg-[#e9eddf]"
+                    aria-label="Next month"
+                  >
+                    <ChevronRight size={19} />
+                  </button>
+                </div>
+
+                <div className="mt-3 grid grid-cols-7 justify-items-center gap-y-1 text-center">
+                  {WEEK_DAYS.map((day) => (
+                    <span
+                      key={day}
+                      className="w-full py-1 text-[10px] font-bold uppercase tracking-wide text-gray-500"
+                    >
+                      {day}
+                    </span>
+                  ))}
+
+                  {calendarCells.map((day, index) => {
+                    if (day === null) {
+                      return <span key={`empty-${index}`} className="h-8 w-9" />;
+                    }
+
+                    const date = new Date(
+                      calendarMonth.getFullYear(),
+                      calendarMonth.getMonth(),
+                      day
+                    );
+                    const dateKey = getDateKey(date);
+                    const valid = isFutureOrToday(date);
+                    const selected = selectedDate === dateKey;
+
+                    return (
+                      <button
+                        key={dateKey}
+                        type="button"
+                        disabled={!valid}
+                        onClick={() => setSelectedDate(dateKey)}
+                        className={`flex h-8 w-9 items-center justify-center rounded-lg text-xs font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4A5C23] ${
+                          selected
+                            ? "bg-[#4A5C23] font-bold text-white shadow-sm"
+                            : valid
+                              ? "text-[#26311d] hover:bg-[#e9eddf] active:bg-[#dce4ce]"
+                              : "cursor-not-allowed text-gray-300"
+                        }`}
+                        aria-label={`Select ${dateKey}`}
+                        aria-pressed={selected}
+                      >
+                        {day}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <p className="mt-2 max-w-[430px] text-[11px] leading-4 text-gray-500">
+                Selecting a date sends a request preference only; it does not confirm availability.
+              </p>
+            </section>
+
             <section id="reviews" className="scroll-mt-32 border-b border-gray-100 py-10">
               <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#71805a]">
                 Traveler feedback
@@ -929,67 +983,6 @@ const TourDetails = () => {
                 </span>
               </div>
 
-              <div className="mt-6 border-t border-gray-100 pt-5">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-[#17200f]">Choose a date</h3>
-                  <span className="text-xs text-gray-500">Request only</span>
-                </div>
-                <div className="mt-4 flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => changeMonth(-1)}
-                    disabled={!canGoPreviousMonth}
-                    className="rounded-full p-2 hover:bg-gray-100 disabled:opacity-30"
-                    aria-label="Previous month"
-                  >
-                    <ChevronLeft size={19} />
-                  </button>
-                  <p className="font-semibold">{currentMonthLabel}</p>
-                  <button
-                    type="button"
-                    onClick={() => changeMonth(1)}
-                    className="rounded-full p-2 hover:bg-gray-100"
-                    aria-label="Next month"
-                  >
-                    <ChevronRight size={19} />
-                  </button>
-                </div>
-                <div className="mt-3 grid grid-cols-7 gap-1 text-center">
-                  {WEEK_DAYS.map((day) => (
-                    <span key={day} className="py-2 text-xs font-medium text-gray-400">{day}</span>
-                  ))}
-                  {calendarCells.map((day, index) => {
-                    if (day === null) return <span key={`empty-${index}`} />;
-                    const date = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), day);
-                    const dateKey = getDateKey(date);
-                    const valid = isFutureOrToday(date);
-                    const selected = selectedDate === dateKey;
-
-                    return (
-                      <button
-                        key={dateKey}
-                        type="button"
-                        disabled={!valid}
-                        onClick={() => setSelectedDate(dateKey)}
-                        className={`aspect-square rounded-xl text-sm transition ${
-                          selected
-                            ? "bg-[#4A5C23] font-semibold text-white"
-                            : valid
-                            ? "hover:bg-[#e9eddf]"
-                            : "cursor-not-allowed text-gray-300"
-                        }`}
-                        aria-label={`Select ${dateKey}`}
-                      >
-                        {day}
-                      </button>
-                    );
-                  })}
-                </div>
-                <p className="mt-3 text-xs leading-5 text-gray-500">
-                  Selecting a date sends a request preference only; it does not confirm availability.
-                </p>
-              </div>
-
               <button
                 type="button"
                 onClick={openBooking}
@@ -998,14 +991,18 @@ const TourDetails = () => {
                 <CalendarDays size={19} />
                 Request to book
               </button>
-
               <button
                 type="button"
                 onClick={toggleFavorite}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-gray-200 px-5 py-3.5 font-semibold transition hover:bg-[#f7f8f4]"
+                aria-pressed={isSaved}
+                className={`mt-3 flex w-full items-center justify-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-[#4A5C23]/20 ${
+                  isSaved
+                    ? "border-[#4A5C23] bg-[#e9eddf] text-[#4A5C23]"
+                    : "border-gray-200 bg-white text-gray-700 hover:border-[#4A5C23] hover:bg-[#f4f5f0] hover:text-[#4A5C23]"
+                }`}
               >
-                <Heart size={18} className={isSaved ? "fill-[#4A5C23] text-[#4A5C23]" : ""} />
-                {isSaved ? "Saved to favorites" : "Save tour"}
+                <Heart size={17} className={isSaved ? "fill-current" : ""} />
+                {isSaved ? "Saved to favorites" : "Save to favorites"}
               </button>
 
               <div className="mt-6 space-y-4 border-t border-gray-100 pt-5">
@@ -1027,54 +1024,7 @@ const TourDetails = () => {
                 </div>
               </div>
 
-              {bookingOpen && (
-                <form id="booking-form" onSubmit={handleBookingSubmit} className="mt-6 space-y-4 border-t border-gray-100 pt-6">
-                  <div>
-                    <h3 className="text-lg font-bold">Booking request</h3>
-                    <p className="mt-1 text-sm leading-6 text-gray-500">Tour: {tour.title}</p>
-                    <p className="text-sm leading-6 text-gray-500">Date: {selectedDate || "Not selected"}</p>
-                    <p className="text-sm leading-6 text-gray-500">Travelers: {guests}</p>
-                  </div>
-                  <input
-                    required
-                    name="name"
-                    autoComplete="name"
-                    placeholder="Your full name"
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#4A5C23]"
-                  />
-                  <input
-                    required
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="Email address"
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#4A5C23]"
-                  />
-                  <input
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    placeholder="Phone / WhatsApp (optional)"
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#4A5C23]"
-                  />
-                  <textarea
-                    name="message"
-                    rows={3}
-                    placeholder="Questions or special requests"
-                    className="w-full resize-y rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#4A5C23]"
-                  />
-                  <button
-                    type="submit"
-                    disabled={sending}
-                    className="w-full rounded-full bg-[#17200f] px-5 py-4 font-semibold text-white transition hover:bg-[#35451a] disabled:opacity-60"
-                  >
-                    {sending ? "Preparing request..." : "Send request"}
-                  </button>
-                  <p className="text-xs leading-5 text-gray-400">
-                    Request submission is not connected yet. This form does not create a booking in the database.
-                  </p>
-                </form>
-              )}
+
             </div>
           </aside>
         </section>
