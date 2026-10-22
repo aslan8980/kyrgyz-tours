@@ -1,57 +1,72 @@
 
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Navigation from "../components/Navigation";
 import { ArrowRight, Clock, MapPin } from "lucide-react";
+
+import Navigation from "../components/Navigation";
+import { supabase } from "../lib/supabase";
 
 import ThreeDays from "../assets/images/3-days.webp";
 import FourDays from "../assets/images/4-days.webp";
 import FiveDays from "../assets/images/5-days.webp";
 import FourteenDays from "../assets/images/14-days.webp";
 
-const tours = [
-  {
-    id: "3-days",
-    title: "3 Days — Bishkek & Ala-Archa",
-    duration: "3 Days",
-    location: "Bishkek & Ala-Archa",
-    image: ThreeDays,
-    description:
-      "A perfect introduction to Kyrgyzstan combining the energy of Bishkek with the breathtaking landscapes of Ala-Archa National Park.",
-    highlights: ["Bishkek", "Ala-Archa", "Mountain landscapes"],
-  },
-  {
-    id: "4-days",
-    title: "4 Days — Issyk-Kul & Song-Kul",
-    duration: "4 Days",
-    location: "Issyk-Kul & Song-Kul",
-    image: FourDays,
-    description:
-      "Discover two of Kyrgyzstan's most iconic destinations — the crystal-clear Issyk-Kul and the spectacular alpine Song-Kul.",
-    highlights: ["Issyk-Kul", "Song-Kul", "Yurt experience"],
-  },
-  {
-    id: "5-days",
-    title: "5 Days — Skiing & Snowboarding in Karakol",
-    duration: "5 Days",
-    location: "Karakol",
-    image: FiveDays,
-    description:
-      "An unforgettable winter adventure in the mountains of Karakol, combining skiing, snowboarding and Kyrgyz hospitality.",
-    highlights: ["Karakol", "Skiing", "Snowboarding"],
-  },
-  {
-    id: "14-days",
-    title: "14 Days — Discover Kyrgyzstan",
-    duration: "14 Days",
-    location: "Across Kyrgyzstan",
-    image: FourteenDays,
-    description:
-      "The ultimate Kyrgyzstan experience. Travel across the country and discover mountains, lakes, canyons, valleys and nomadic culture.",
-    highlights: ["Mountains", "Lakes", "Nomadic culture"],
-  },
-];
+type Tour = {
+  id: string;
+  slug: string;
+  title: string;
+  duration: number;
+  duration_label: string | null;
+  location: string | null;
+  main_image: string | null;
+  short_description: string | null;
+  description: string | null;
+  highlights: string[] | null;
+};
+
+const localImages: Record<string, string> = {
+  "3-days": ThreeDays,
+  "4-days": FourDays,
+  "5-days": FiveDays,
+  "14-days": FourteenDays,
+};
 
 const Itineraries = () => {
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadTours() {
+      const { data, error } = await supabase
+        .from("tours")
+        .select(
+          "id, slug, title, duration, duration_label, location, main_image, short_description, description, highlights"
+        )
+        .eq("status", "published")
+        .order("duration", { ascending: true });
+
+      if (!active) return;
+
+      if (error) {
+        console.error("Failed to load tours:", error.message);
+        setError("We couldn't load the tours. Please try again later.");
+      } else {
+        setTours((data ?? []) as Tour[]);
+      }
+
+      setLoading(false);
+    }
+
+    loadTours();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <Navigation />
@@ -63,7 +78,6 @@ const Itineraries = () => {
           alt="Discover Kyrgyzstan"
           className="absolute inset-0 h-full w-full object-cover"
         />
-
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-28 md:px-8">
@@ -113,28 +127,49 @@ const Itineraries = () => {
             </p>
           </div>
 
-          {/* COMPACT, FULLY CLICKABLE TOUR CARDS */}
           <div className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
+            {loading && (
+              <p className="col-span-full py-12 text-center text-gray-500">
+                Loading journeys...
+              </p>
+            )}
+
+            {error && (
+              <p className="col-span-full py-12 text-center text-red-700">
+                {error}
+              </p>
+            )}
+
+            {!loading && !error && tours.length === 0 && (
+              <div className="col-span-full py-12 text-center">
+                <h3 className="text-xl font-semibold">
+                  New journeys are coming soon
+                </h3>
+                <p className="mt-2 text-gray-600">
+                  Please check back later to discover our tours.
+                </p>
+              </div>
+            )}
+
             {tours.map((tour) => (
               <Link
                 key={tour.id}
-                to={`/itineraries/${tour.id}`}
+                to={`/itineraries/${tour.slug}`}
                 className="group block overflow-hidden rounded-3xl bg-[#f4f5f0] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4A5C23]/40"
                 aria-label={`View journey: ${tour.title}`}
               >
                 <div className="relative h-[250px] overflow-hidden sm:h-[270px] md:h-[285px]">
                   <img
-                    src={tour.image}
+                    src={tour.main_image || localImages[tour.slug] || FourteenDays}
                     alt={tour.title}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
                   <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 backdrop-blur-md">
                     <Clock className="h-4 w-4 text-[#4A5C23]" />
                     <span className="text-sm font-semibold">
-                      {tour.duration}
+                      {tour.duration_label || `${tour.duration} Days`}
                     </span>
                   </span>
                 </div>
@@ -142,7 +177,7 @@ const Itineraries = () => {
                 <div className="flex min-h-[285px] flex-col p-6 md:p-7">
                   <div className="flex items-center gap-2 text-sm text-gray-500">
                     <MapPin className="h-4 w-4 shrink-0 text-[#4A5C23]" />
-                    {tour.location}
+                    {tour.location || "Kyrgyzstan"}
                   </div>
 
                   <h3 className="mt-3 text-xl font-bold leading-snug text-[#17200f] transition-colors group-hover:text-[#4A5C23] md:text-2xl">
@@ -150,11 +185,11 @@ const Itineraries = () => {
                   </h3>
 
                   <p className="mt-3 text-sm leading-6 text-gray-600 md:text-base">
-                    {tour.description}
+                    {tour.short_description || tour.description}
                   </p>
 
                   <div className="mt-5 flex flex-wrap gap-2">
-                    {tour.highlights.map((highlight) => (
+                    {(tour.highlights || []).map((highlight) => (
                       <span
                         key={highlight}
                         className="rounded-full bg-white px-3 py-1.5 text-xs text-gray-600 md:text-sm"
@@ -183,13 +218,11 @@ const Itineraries = () => {
             alt="Ala-Archa"
             className="h-[160px] w-full rounded-2xl object-cover md:h-[300px] md:rounded-3xl"
           />
-
           <img
             src={FourDays}
             alt="Issyk-Kul and Song-Kul"
             className="h-[160px] w-full rounded-2xl object-cover md:h-[300px] md:rounded-3xl"
           />
-
           <img
             src={FiveDays}
             alt="Karakol"

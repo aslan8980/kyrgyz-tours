@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+import { testSupabaseConnection } from "../lib/testSupabase";
+
+
 
 import Navigation from "../components/Navigation";
 import Hero from "../components/Hero";
@@ -48,6 +51,13 @@ const Index = () => {
       window.location.origin + "/"
     );
   }, []);
+
+
+  useEffect(() => {
+  testSupabaseConnection();
+}, []);
+
+
 
   return (
     <div

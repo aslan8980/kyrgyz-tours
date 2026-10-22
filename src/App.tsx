@@ -17,6 +17,12 @@ import Contact from "./pages/Contact us";
 import SavedTours from "./pages/SavedTours";
 import Footer from "./components/Footer";
 
+
+import AdminLogin from "./pages/AdminLogin";
+import Admin from "./pages/Admin";
+
+
+
 const queryClient = new QueryClient();
 
 const MainLayout = () => (
@@ -36,7 +42,12 @@ const App = () => (
 
       <BrowserRouter>
         <Routes>
-          <Route element={<MainLayout />}>
+
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<Admin />} />
+
+
+            <Route element={<MainLayout />}>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/itineraries" element={<Itineraries />} />
