@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -235,6 +235,7 @@ function isFutureOrToday(date: Date): boolean {
 
 const TourDetails = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const [allTours, setAllTours] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
@@ -316,15 +317,23 @@ const TourDetails = () => {
   }, [allTours, searchQuery]);
 
   const toggleFavorite = () => {
-    if (!tour) return;
-    const next = isSaved
-      ? savedTours.filter((slug) => slug !== tour.slug)
-      : [...savedTours, tour.slug];
+  if (!tour) return;
 
-    setSavedTours(next);
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(next));
-    setNotice(isSaved ? "Removed from saved tours." : "Tour saved to favorites.");
-  };
+  const next = isSaved
+    ? savedTours.filter((slug) => slug !== tour.slug)
+    : [...savedTours, tour.slug];
+
+  setSavedTours(next);
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(next));
+
+  window.dispatchEvent(new Event("favorites-updated"));
+
+  setNotice(
+    isSaved
+      ? "Removed from saved tours."
+      : "Tour saved to favorites."
+  );
+};
 
   const changeGallery = (direction: number) => {
     if (galleryImages.length < 2) return;
@@ -335,17 +344,22 @@ const TourDetails = () => {
   };
 
   const openBooking = () => {
-    if (!selectedDate) {
-      setNotice("Please choose a date before requesting to book.");
-      document
-        .getElementById("tour-calendar")
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
-    }
+  if (!selectedDate) {
+    setNotice("Please choose a date before requesting to book.");
+    document
+      .getElementById("tour-calendar")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
 
-    setNotice("");
-    window.location.assign("/contact");
-  };
+  const params = new URLSearchParams({
+    tour: tour.title,
+    date: selectedDate,
+    travelers: String(guests),
+  });
+
+  window.location.assign(`/contact?${params.toString()}`);
+};
 
 
   const handleGuideContactSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -480,16 +494,7 @@ const TourDetails = () => {
             )}
           </div>
 
-          <Link
-            to="/saved"
-            title="View saved tours"
-            aria-label={`View saved tours (${savedTours.length})`}
-            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-sm font-semibold text-[#4A5C23] transition hover:border-[#4A5C23] hover:bg-[#f4f5f0]"
-          >
-            <Heart size={15} />
-            <span className="hidden md:inline">Favorites</span>
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#e9eddf] px-1 text-xs">{savedTours.length}</span>
-          </Link>
+          
 
           <label className="flex shrink-0 items-center gap-2 text-sm text-gray-600">
             <span className="hidden sm:inline">Currency</span>

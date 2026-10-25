@@ -1,5 +1,7 @@
+
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Heart } from "lucide-react";
 import Logo from "../assets/images/logo1.webp";
 
 const Navigation = () => {
@@ -22,6 +24,7 @@ const Navigation = () => {
     { name: "Gallery", path: "/gallery" },
     { name: "Testimonials", path: "/testimonials" },
     { name: "Map", path: "/map" },
+    { name: "Favorites", path: "/saved", icon: true },
     { name: "Contact Us", path: "/contact" },
   ];
 
@@ -71,7 +74,7 @@ const Navigation = () => {
             />
           </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => {
               const active = isActive(item.path);
 
@@ -88,7 +91,10 @@ const Navigation = () => {
                       : "text-gray-800 hover:text-[#4A5C23]"
                   }`}
                 >
-                  {item.name}
+                  <span className="flex items-center gap-1.5">
+                    {item.icon && <Heart size={16} />}
+                    {item.name}
+                  </span>
 
                   <span
                     className={`absolute left-0 bottom-0 h-[2px] rounded-full bg-[#4A5C23] transition-all duration-300 ${
@@ -130,7 +136,10 @@ const Navigation = () => {
                         : "text-gray-800 hover:bg-gray-50"
                     }`}
                   >
-                    {item.name}
+                    <span className="flex items-center gap-2">
+                      {item.icon && <Heart size={18} />}
+                      {item.name}
+                    </span>
                   </Link>
                 );
               })}
